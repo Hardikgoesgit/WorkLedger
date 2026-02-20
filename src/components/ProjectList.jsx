@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { togglePayment, removeProject } from '../features/projects/projectSlice';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const ProjectList = () => {
   const dispatch = useDispatch();
@@ -25,41 +26,65 @@ const ProjectList = () => {
   };
 
   return (
-    <div className="card">
+    <motion.div 
+      className="card"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4 }}
+    >
       <h3>Projects</h3>
       <div className="list">
         {projects.length === 0 ? (
           <p className="empty-state">No projects yet</p>
         ) : (
-          projects.map((project) => (
-            <div key={project.id} className="project-card">
-              <div className="project-header">
-                <h4>{project.title}</h4>
-                <span className={`badge ${project.paid ? 'badge-success' : 'badge-warning'}`}>
-                  {project.paid ? 'Paid' : 'Pending'}
-                </span>
-              </div>
-              <p className="text-muted">Client: {getClientName(project.clientId)}</p>
-              <p className="project-amount">${project.amount.toLocaleString()}</p>
-              <div className="project-actions">
-                <button
-                  className={`btn ${project.paid ? 'btn-secondary' : 'btn-success'}`}
-                  onClick={() => handleTogglePayment(project.id)}
-                >
-                  {project.paid ? 'Mark Unpaid' : 'Mark Paid'}
-                </button>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => handleRemoveProject(project.id)}
-                >
-                  Remove
-                </button>
-              </div>
-            </div>
-          ))
+          <AnimatePresence>
+            {projects.map((project) => (
+              <motion.div 
+                key={project.id} 
+                className="project-card"
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 50 }}
+                layout
+                transition={{ duration: 0.3 }}
+              >
+                <div className="project-header">
+                  <h4>{project.title}</h4>
+                  <motion.span 
+                    className={`badge ${project.paid ? 'badge-success' : 'badge-warning'}`}
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ duration: 0.3 }}
+                    key={project.paid ? 'paid' : 'pending'}
+                  >
+                    {project.paid ? 'Paid' : 'Pending'}
+                  </motion.span>
+                </div>
+                <p className="text-muted">Client: {getClientName(project.clientId)}</p>
+                <p className="project-amount">${project.amount.toLocaleString()}</p>
+                <div className="project-actions">
+                  <motion.button
+                    className={`btn ${project.paid ? 'btn-secondary' : 'btn-success'}`}
+                    onClick={() => handleTogglePayment(project.id)}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {project.paid ? 'Mark Unpaid' : 'Mark Paid'}
+                  </motion.button>
+                  <motion.button
+                    className="btn btn-danger"
+                    onClick={() => handleRemoveProject(project.id)}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Remove
+                  </motion.button>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

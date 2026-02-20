@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Dashboard from './components/Dashboard';
 import ClientList from './components/ClientList';
@@ -6,9 +7,27 @@ import AddClientForm from './components/AddClientForm';
 import AddProjectForm from './components/AddProjectForm';
 
 function App() {
+  const [darkMode, setDarkMode] = useState(() => {
+    const saved = localStorage.getItem('darkMode');
+    return saved ? JSON.parse(saved) : false;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('darkMode', JSON.stringify(darkMode));
+    if (darkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }, [darkMode]);
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
   return (
     <div className="app">
-      <Header />
+      <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
       
       <div className="container">
         <Dashboard />

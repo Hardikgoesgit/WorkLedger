@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProject } from '../features/projects/projectSlice';
+import { motion } from 'framer-motion';
 
 const AddProjectForm = () => {
   const [clientId, setClientId] = useState('');
@@ -23,7 +24,12 @@ const AddProjectForm = () => {
   };
 
   return (
-    <div className="card">
+    <motion.div 
+      className="card"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+    >
       <h3>Add New Project</h3>
       <form onSubmit={handleSubmit}>
         <select
@@ -52,11 +58,16 @@ const AddProjectForm = () => {
           onChange={(e) => setAmount(e.target.value)}
           required
         />
-        <button type="submit" className="btn btn-primary">
+        <motion.button 
+          type="submit" 
+          className="btn btn-primary"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
           Add Project
-        </button>
+        </motion.button>
       </form>
-    </div>
+    </motion.div>
   );
 };
 
