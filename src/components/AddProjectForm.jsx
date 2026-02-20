@@ -1,0 +1,63 @@
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addProject } from '../features/projects/projectSlice';
+
+const AddProjectForm = () => {
+  const [clientId, setClientId] = useState('');
+  const [title, setTitle] = useState('');
+  const [amount, setAmount] = useState('');
+  const dispatch = useDispatch();
+  
+  // Subscribe to clients from Redux store
+  const clients = useSelector((state) => state.clients.clients);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (clientId && title.trim() && amount) {
+      // UI Event → dispatch(action) → reducer updates state
+      dispatch(addProject({ clientId, title, amount }));
+      setClientId('');
+      setTitle('');
+      setAmount('');
+    }
+  };
+
+  return (
+    <div className="card">
+      <h3>Add New Project</h3>
+      <form onSubmit={handleSubmit}>
+        <select
+          value={clientId}
+          onChange={(e) => setClientId(e.target.value)}
+          required
+        >
+          <option value="">Select Client</option>
+          {clients.map((client) => (
+            <option key={client.id} value={client.id}>
+              {client.name}
+            </option>
+          ))}
+        </select>
+        <input
+          type="text"
+          placeholder="Project Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+        />
+        <input
+          type="number"
+          placeholder="Amount"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          required
+        />
+        <button type="submit" className="btn btn-primary">
+          Add Project
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default AddProjectForm;
