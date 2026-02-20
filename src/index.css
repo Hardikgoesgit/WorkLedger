@@ -19,13 +19,13 @@ body {
 
 /* Header - Apple Style */
 .header {
-  background: linear-gradient(135deg, #0f172a, #4f46e5, #9333ea);
+  background: linear-gradient(135deg, #0f0f1e, #1a1a2e, #2d2d44);
   color: white;
   padding: 60px 20px;
   text-align: center;
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
 
 .header h1 {
@@ -489,14 +489,14 @@ select:focus {
    ======================================== */
 
 body.dark-mode {
-  background: linear-gradient(to bottom, #0f172a, #1e1b4b);
+  background: linear-gradient(to bottom, #0a0a0f, #1a1a2e);
   color: #e5e7eb;
 }
 
 /* Dark Mode - Header */
 body.dark-mode .header {
-  background: linear-gradient(135deg, #020617, #312e81, #581c87);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(135deg, #0a0a0f, #1a1a2e, #2d2d44);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
 }
 
 /* Dark Mode - Container */
