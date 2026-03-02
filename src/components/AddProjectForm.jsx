@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addProject } from '../features/projects/projectSlice';
+import { addProject } from '../redux/slices/projectSlice';
 import { motion } from 'framer-motion';
 
 const AddProjectForm = () => {

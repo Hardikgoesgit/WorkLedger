@@ -1,50 +1,26 @@
-import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
-import Dashboard from './components/Dashboard';
-import ClientList from './components/ClientList';
-import ProjectList from './components/ProjectList';
-import AddClientForm from './components/AddClientForm';
-import AddProjectForm from './components/AddProjectForm';
+import Home from './pages/Home';
+import Projects from './pages/Projects';
+import Clients from './pages/Clients';
+import Reports from './pages/Reports';
 
 function App() {
-  const [darkMode, setDarkMode] = useState(() => {
-    const saved = localStorage.getItem('darkMode');
-    return saved ? JSON.parse(saved) : true;
-  });
-
-  useEffect(() => {
-    localStorage.setItem('darkMode', JSON.stringify(darkMode));
-    if (darkMode) {
-      document.body.classList.add('dark-mode');
-    } else {
-      document.body.classList.remove('dark-mode');
-    }
-  }, [darkMode]);
-
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
-
   return (
-    <div className="app">
-      <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-      
-      <div className="container">
-        <Dashboard />
+    <Router>
+      <div className="app">
+        <Header />
         
-        <div className="grid">
-          <div className="column">
-            <AddClientForm />
-            <ClientList />
-          </div>
-          
-          <div className="column">
-            <AddProjectForm />
-            <ProjectList />
-          </div>
+        <div className="container">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/clients" element={<Clients />} />
+            <Route path="/reports" element={<Reports />} />
+          </Routes>
         </div>
       </div>
-    </div>
+    </Router>
   );
 }
 

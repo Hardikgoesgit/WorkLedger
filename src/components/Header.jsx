@@ -1,7 +1,13 @@
+import { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
+import { Link, useLocation } from 'react-router-dom';
+import { AppContext } from '../context/AppContext';
 
-const Header = ({ darkMode, toggleDarkMode }) => {
+const Header = () => {
+  const { darkMode, toggleDarkMode } = useContext(AppContext);
+  const location = useLocation();
+
   return (
     <header className="header">
       <motion.div 
@@ -9,9 +15,16 @@ const Header = ({ darkMode, toggleDarkMode }) => {
         initial={{ opacity: 0, y: -40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
+        style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '1200px', margin: '0 auto' }}
       >
         <div>
           <h1>WorkLedger</h1>
+          <nav className="nav-links" style={{ marginTop: '10px', display: 'flex', gap: '20px', alignItems: 'center' }}>
+            <Link to="/" style={{ color: location.pathname === '/' ? '#8b5cf6' : 'rgba(255,255,255,0.9)', textDecoration: 'none', fontWeight: location.pathname === '/' ? '600' : 'normal', fontSize: '0.95rem', transition: 'all 0.3s ease' }}>Dashboard</Link>
+            <Link to="/projects" style={{ color: location.pathname === '/projects' ? '#8b5cf6' : 'rgba(255,255,255,0.9)', textDecoration: 'none', fontWeight: location.pathname === '/projects' ? '600' : 'normal', fontSize: '0.95rem', transition: 'all 0.3s ease' }}>Projects</Link>
+            <Link to="/clients" style={{ color: location.pathname === '/clients' ? '#8b5cf6' : 'rgba(255,255,255,0.9)', textDecoration: 'none', fontWeight: location.pathname === '/clients' ? '600' : 'normal', fontSize: '0.95rem', transition: 'all 0.3s ease' }}>Clients</Link>
+            <Link to="/reports" style={{ color: location.pathname === '/reports' ? '#8b5cf6' : 'rgba(255,255,255,0.9)', textDecoration: 'none', fontWeight: location.pathname === '/reports' ? '600' : 'normal', fontSize: '0.95rem', transition: 'all 0.3s ease' }}>Reports</Link>
+          </nav>
         </div>
         <motion.button 
           className="theme-toggle" 

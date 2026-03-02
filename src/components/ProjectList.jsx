@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { togglePayment, removeProject } from '../features/projects/projectSlice';
+import { togglePayment, removeProject } from '../redux/slices/projectSlice';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const ProjectList = () => {

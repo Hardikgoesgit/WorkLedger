@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addClient } from '../features/clients/clientSlice';
+import { addClient } from '../redux/slices/clientSlice';
 import { motion } from 'framer-motion';
 
 const AddClientForm = () => {
