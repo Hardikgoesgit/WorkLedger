@@ -3,23 +3,16 @@ import React, { createContext, useState, useEffect } from 'react';
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  const [darkMode, setDarkMode] = useState(() => {
-    const saved = localStorage.getItem('darkMode');
-    return saved ? JSON.parse(saved) : true;
-  });
+  // Design is now permanently dark — always force dark-mode class
+  const [darkMode] = useState(true);
 
   useEffect(() => {
-    localStorage.setItem('darkMode', JSON.stringify(darkMode));
-    if (darkMode) {
-      document.body.classList.add('dark-mode');
-    } else {
-      document.body.classList.remove('dark-mode');
-    }
-  }, [darkMode]);
+    document.body.classList.add('dark-mode');
+    return () => { };
+  }, []);
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
+  // Keep toggleDarkMode as a no-op for backward compatibility
+  const toggleDarkMode = () => { };
 
   return (
     <AppContext.Provider value={{ darkMode, toggleDarkMode }}>

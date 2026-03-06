@@ -1,57 +1,88 @@
 import { useContext } from 'react';
-import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
+import { LayoutDashboard, FolderKanban, Users, BarChart3, Layers, ChevronRight } from 'lucide-react';
+
+const NAV_ITEMS = [
+  { to: '/', label: 'Dashboard', icon: LayoutDashboard },
+  { to: '/projects', label: 'Projects', icon: FolderKanban },
+  { to: '/clients', label: 'Clients', icon: Users },
+  { to: '/reports', label: 'Reports', icon: BarChart3 },
+];
+
+const ROUTE_LABELS = {
+  '/': 'Dashboard',
+  '/projects': 'Projects',
+  '/clients': 'Clients',
+  '/reports': 'Reports',
+};
 
 const Header = () => {
-  const { darkMode, toggleDarkMode } = useContext(AppContext);
   const location = useLocation();
+  const currentLabel = ROUTE_LABELS[location.pathname] ?? 'Overview';
 
   return (
     <header className="header">
-      <motion.div 
-        className="header-content"
-        initial={{ opacity: 0, y: -40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '1200px', margin: '0 auto' }}
-      >
-        <div>
-          <h1>WorkLedger</h1>
-          <nav className="nav-links" style={{ marginTop: '10px', display: 'flex', gap: '20px', alignItems: 'center' }}>
-            <Link to="/" style={{ color: location.pathname === '/' ? '#8b5cf6' : 'rgba(255,255,255,0.9)', textDecoration: 'none', fontWeight: location.pathname === '/' ? '600' : 'normal', fontSize: '0.95rem', transition: 'all 0.3s ease' }}>Dashboard</Link>
-            <Link to="/projects" style={{ color: location.pathname === '/projects' ? '#8b5cf6' : 'rgba(255,255,255,0.9)', textDecoration: 'none', fontWeight: location.pathname === '/projects' ? '600' : 'normal', fontSize: '0.95rem', transition: 'all 0.3s ease' }}>Projects</Link>
-            <Link to="/clients" style={{ color: location.pathname === '/clients' ? '#8b5cf6' : 'rgba(255,255,255,0.9)', textDecoration: 'none', fontWeight: location.pathname === '/clients' ? '600' : 'normal', fontSize: '0.95rem', transition: 'all 0.3s ease' }}>Clients</Link>
-            <Link to="/reports" style={{ color: location.pathname === '/reports' ? '#8b5cf6' : 'rgba(255,255,255,0.9)', textDecoration: 'none', fontWeight: location.pathname === '/reports' ? '600' : 'normal', fontSize: '0.95rem', transition: 'all 0.3s ease' }}>Reports</Link>
+      <div className="header-content">
+        {/* Left: Logo + Nav */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
+          {/* Logo */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{
+              width: '28px', height: '28px',
+              background: 'linear-gradient(135deg, #58A6FF 0%, #1F6FEB 100%)',
+              borderRadius: '6px',
+              display: 'flex', alignItems: 'center', justifyContent: 'center'
+            }}>
+              <Layers size={14} color="#0D1117" strokeWidth={2.5} />
+            </div>
+            <span style={{ fontWeight: 700, fontSize: '1rem', color: '#E6EDF3', letterSpacing: '-0.3px' }}>
+              WorkLedger
+            </span>
+          </div>
+
+          {/* Nav */}
+          <nav className="nav-links">
+            {NAV_ITEMS.map(({ to, label, icon: Icon }) => {
+              const isActive = location.pathname === to;
+              return (
+                <Link
+                  key={to}
+                  to={to}
+                  className={isActive ? 'active' : ''}
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                >
+                  <Icon size={13} strokeWidth={2} />
+                  {label}
+                </Link>
+              );
+            })}
           </nav>
         </div>
-        <motion.button 
-          className="theme-toggle" 
-          onClick={toggleDarkMode}
-          aria-label="Toggle dark mode"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          {darkMode ? (
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="5"/>
-              <line x1="12" y1="1" x2="12" y2="3"/>
-              <line x1="12" y1="21" x2="12" y2="23"/>
-              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-              <line x1="1" y1="12" x2="3" y2="12"/>
-              <line x1="21" y1="12" x2="23" y2="12"/>
-              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-            </svg>
-          ) : (
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-            </svg>
-          )}
-        </motion.button>
-      </motion.div>
+
+        {/* Right: Breadcrumb + System status */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          {/* Breadcrumb */}
+          <div className="breadcrumb">
+            <span>WorkLedger</span>
+            <ChevronRight size={12} />
+            <span className="breadcrumb-current">{currentLabel}</span>
+          </div>
+
+          {/* Status dot */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#3FB950' }}>
+            <span style={{
+              width: '6px', height: '6px',
+              borderRadius: '50%',
+              background: '#3FB950',
+              boxShadow: '0 0 6px #3FB950',
+              display: 'inline-block'
+            }} />
+            Live
+          </div>
+        </div>
+      </div>
     </header>
   );
 };
